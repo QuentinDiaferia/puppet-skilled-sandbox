@@ -46,6 +46,19 @@ endforeach;
     <ul>
         <?= navigation_anchor('frontoffice/contact', lang('navigation_frontoffice_contact')) ?>
     </ul>
+    <?php if (route_is_accessible('backoffice.*')) : ?>
+        <h2><?= lang('navigation_backoffice') ?></h2>
+        <?php if (route_is_accessible('backoffice.user')) : ?>
+            <ul>
+                <?= navigation_anchor('backoffice/user', lang('navigation_backoffice_user')) ?>
+            </ul>
+        <?php endif; ?>
+        <?php if (route_is_accessible('backoffice.company')) : ?>
+            <ul>
+                <?= navigation_anchor('backoffice/company', lang('navigation_backoffice_company')) ?>
+            </ul>
+        <?php endif; ?>
+    <?php endif; ?>
     </nav>
     <footer class="Sidenav-footer">
     <?php if (!empty($this->fetch('footer_nav'))): ?>
