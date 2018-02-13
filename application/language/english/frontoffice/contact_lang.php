@@ -11,6 +11,7 @@ $lang['contact_label_first_name'] = 'First name';
 $lang['contact_label_last_name'] = 'Last name';
 $lang['contact_label_email'] = 'Email';
 $lang['contact_label_company'] = 'Company';
+$lang['contact_label_companies'] = 'Companies';
 $lang['contact_label_phone'] = 'Phone';
 $lang['contact_label_mobile'] = 'Mobile';
 $lang['contact_label_address_1'] = 'Address';
