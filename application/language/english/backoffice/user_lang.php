@@ -16,6 +16,7 @@ $lang['user_label_first-name'] = 'First name';
 $lang['user_label_last-name'] = 'Last name';
 $lang['user_label_email'] = 'Email';
 $lang['user_label_company'] = 'Company';
+$lang['user_label_companies'] = 'Organisations';
 $lang['user_label_phone'] = 'Phone';
 $lang['user_label_mobile'] = 'Mobile';
 $lang['user_label_address_1'] = 'Address';
@@ -42,3 +43,4 @@ $lang['user_email_content_notify_setup'] = "Hello {{first_name}} {{last_name}},"
 // Error
 $lang['user_error_not_unique_email'] = 'Email already used.';
 $lang['user_error_company_does_not_exist'] = 'This company does not exist.';
+$lang['user_error_user_does_not_belong_to_company'] = 'You don\'t have the right to create users for this company.';

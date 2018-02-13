@@ -114,7 +114,6 @@ class User extends \App\Core\Controller\BackOffice
             $languages = $service->getLanguagesList();
             $companies = array_pluck(Company::get(), 'name', 'id');
             $roles = [
-                App\Model\Role::ADMIN => lang('general_label_role_admin'),
                 App\Model\Role::MANAGER => lang('general_label_role_manager'),
                 App\Model\Role::USER => lang('general_label_role_user'),
             ];
@@ -143,7 +142,7 @@ class User extends \App\Core\Controller\BackOffice
             $item->save();
             if ($this->authenticationService->user()->isAdministrator()) {
                 $item->roles()->sync($validator->set_value('role'));
-                $item->companies()->sync($validator->set_value('company'));
+                $item->companies()->sync($validator->set_value('companies[]'));
             } else {
                 $item->roles()->sync(Role::USER);
                 $item->companies()->sync($this->authenticationService->user()->companies[0]);
@@ -241,10 +240,11 @@ class User extends \App\Core\Controller\BackOffice
             ]
         );
         $validator->set_rules(
-            'company',
-            'lang:user_label_company',
+            'companies[]',
+            'lang:user_label_companies',
             [
                 'trim',
+                'required',
                 [
                     'user_error_company_does_not_exist',
                     function ($value) {
@@ -255,14 +255,17 @@ class User extends \App\Core\Controller\BackOffice
                         if (!$company) {
                             return false;
                         }
-                        return $company;
+                        return true;
                     }
                 ],
                 [
-                    'required',
+                    'user_error_user_does_not_belong_to_company',
                     function ($value) {
-                        if ($this->authenticationService->user()->isAdministrator()) {
-                            return !empty($value);
+                        if (empty($value) || $this->authenticationService->user()->isAdministrator()) {
+                            return true;
+                        }
+                        if (!in_array($value, array_pluck($this->authenticationService->user()->companies, 'id'))) {
+                            return false;
                         }
                         return true;
                     }
@@ -325,7 +328,7 @@ class User extends \App\Core\Controller\BackOffice
                 'lang:user_label_role',
                 [
                     'trim',
-                    'in_list[' . implode(',', Role::roleList()) . ']',
+                    'in_list[' . Role::USER . ',' . Role::MANAGER . ']',
                     'required',
                 ]
             );

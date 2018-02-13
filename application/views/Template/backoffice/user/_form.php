@@ -48,23 +48,29 @@ $item = $this->fetch('item');
             <?= $this->element(
                 'form/block_input',
                 [
-                    'name' => 'company',
+                    'name' => 'companies[]',
                     'input_element' => 'form/select',
-                    'label' => 'lang:user_label_company',
-                    'id' => $prepend . 'company',
-                    'default_value' => !empty($item->companies) ? $item->companies[0]->getKey() : null,
+                    'label' => 'lang:user_label_companies',
+                    'id' => $prepend . 'companies',
+                    'default_value' => $item ? array_pluck($item->companies, 'id') : [],
                     'options' => $this->fetch('companies'),
+                    'extra' => [
+                        'multiple' => 'multiple'
+                    ]
                 ]
             ) ?>
         <?php else : ?>
             <?= $this->element(
                 'form/block_input',
                 [
-                    'name' => 'company',
-                    'input_element' => 'form/info',
-                    'label' => 'lang:user_label_company',
-                    'id' => $prepend . 'company',
-                    'default_value' => app()->authenticationService->user()->companies[0]->name
+                    'name' => 'companies[]',
+                    'input_element' => 'form/select',
+                    'label' => 'lang:user_label_companies',
+                    'id' => $prepend . 'companies',
+                    'options' => array_pluck(app()->authenticationService->user()->companies, 'name', 'id'),
+                    'extra' => [
+                        'multiple' => 'multiple'
+                    ]
                 ]
             ) ?>
         <?php endif ?>

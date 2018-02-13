@@ -35,12 +35,14 @@
                 }
             ],
             [
-                'query_key' => 'company',
-                'label' => 'lang:user_label_company',
+                'query_key' => 'companies',
+                'label' => 'lang:user_label_companies',
                 'formater' => function ($item) {
-                    if (!empty($item->companies)) {
-                        return html_escape($item->companies[0]->name);
+                    $str = '';
+                    foreach ($item->companies as $company) {
+                        $str .= '<li>' . html_escape($company->name) . '</li>';
                     }
+                    return '<ul>' . $str . '</ul>';
                 }
             ],
             [
