@@ -51,7 +51,7 @@ class RoboFile extends \Globalis\Robo\Tasks
         // Install NPM dependencies
         $task = $this->taskExec('make')
             ->arg('install')
-            ->dir($appPath . '/integrations')
+            ->dir($appPath . '/public')
             ->run();
     }
 
@@ -72,16 +72,16 @@ class RoboFile extends \Globalis\Robo\Tasks
         $this->loadConfig();
 
         $this->taskWatch()
-            ->monitor('integrations/assets/styles', function () {
+            ->monitor('public/assets/styles', function () {
                 $this->_assetsBuildStyles(__DIR__);
             })
-            ->monitor('integrations/assets/scripts', function () {
+            ->monitor('public/assets/scripts', function () {
                 $this->_assetsBuildScripts(__DIR__);
             })
-            ->monitor('integrations/assets/images', function () {
+            ->monitor('public/assets/images', function () {
                 $this->_assetsBuildImages(__DIR__);
             })
-            ->monitor('integrations/assets/fonts', function () {
+            ->monitor('public/assets/fonts', function () {
                 $this->_assetsBuildFonts(__DIR__);
             })->run();
     }
@@ -97,45 +97,59 @@ class RoboFile extends \Globalis\Robo\Tasks
     private function _assetsBuildStyles($appPath)
     {
         $this->taskExec('node_modules/.bin/node-sass')
-                ->dir(__DIR__ . '/integrations/')
+                ->dir(__DIR__ . '/public/')
                 ->rawArg('--output-style=compressed')
                 ->rawArg('assets/styles/main.scss')
-                ->rawArg('-o ' . $appPath .'/public/styles/')
+                ->rawArg('-o ' . $appPath .'/public/dist/styles/')
             ->taskExec('node_modules/.bin/postcss')
-                ->dir(__DIR__ . '/integrations/')
+                ->dir(__DIR__ . '/public/')
                 ->rawArg('--config postcss.js')
-                ->rawArg('--replace ' . $appPath .'/public/styles/main.css')
+                ->rawArg('--replace ' . $appPath .'/public/dist/styles/main.css')
+            ->run();
+        $this->taskExec('node_modules/.bin/node-sass')
+                ->dir(__DIR__ . '/public/')
+                ->rawArg('--output-style=compressed')
+                ->rawArg('assets/styles/debug.scss')
+                ->rawArg('-o ' . $appPath .'/public/dist/styles/')
+            ->taskExec('node_modules/.bin/postcss')
+                ->dir(__DIR__ . '/public/')
+                ->rawArg('--config postcss.js')
+                ->rawArg('--replace ' . $appPath .'/public/dist/styles/debug.css')
             ->run();
     }
 
     private function _assetsBuildScripts($appPath)
     {
         $this->taskExec('node_modules/.bin/uglifyjs')
-                ->dir(__DIR__ . '/integrations/')
-                ->rawArg(__DIR__ . '/integrations/assets/scripts/*.js')
-                ->rawArg('-o ' . $appPath .'/public/scripts/main.js')
+                ->dir(__DIR__ . '/public/')
+                ->rawArg(__DIR__ . '/public/assets/scripts/*.js')
+                ->rawArg('-o ' . $appPath .'/public/dist/scripts/main.js')
+            ->run();
+        $this->taskExec('cp')
+                ->dir(__DIR__ . '/public/')
+                ->rawArg('-r ' . $appPath . '/public/assets/scripts/lib dist/scripts')
             ->run();
         $this->taskExec('node_modules/.bin/uglifyjs')
-                ->dir(__DIR__ . '/integrations/')
-                ->rawArg(__DIR__ . '/integrations/node_modules/jquery/dist/jquery.js')
-                ->rawArg(__DIR__ . '/integrations/node_modules/popper.js/dist/umd/popper.js')
-                ->rawArg(__DIR__ . '/integrations/node_modules/bootstrap/dist/js/bootstrap.js')
-                ->rawArg('-o ' . $appPath .'/public/scripts/vendor.js')
+                ->dir(__DIR__ . '/public/')
+                ->rawArg(__DIR__ . '/public/node_modules/jquery/dist/jquery.js')
+                ->rawArg(__DIR__ . '/public/node_modules/popper.js/dist/umd/popper.js')
+                ->rawArg(__DIR__ . '/public/node_modules/bootstrap/dist/js/bootstrap.js')
+                ->rawArg('-o ' . $appPath .'/public/dist/scripts/vendor.js')
             ->run();
     }
 
     private function _assetsBuildImages($appPath)
     {
-        $this->taskImageMinify(__DIR__ . '/integrations/assets/images/*')
-                ->to($appPath .'/public/images/')
+        $this->taskImageMinify(__DIR__ . '/public/assets/images/*')
+                ->to($appPath .'/public/dist/images/')
             ->run();
     }
 
     private function _assetsBuildFonts($appPath)
     {
         $this->taskRsync()
-            ->fromPath(__DIR__ . '/integrations/assets/fonts')
-            ->toPath($appPath . '/public')
+            ->fromPath(__DIR__ . '/public/assets/fonts')
+            ->toPath($appPath . '/public/dist/')
             ->recursive()
             ->delete()
             ->option('perms')

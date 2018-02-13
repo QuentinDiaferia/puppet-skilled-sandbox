@@ -64,7 +64,7 @@ else
 	@ npm install
 endif
 	@ echo "› Done. Creating folders:"
-	@ for dir in "dist/styles" "dist/scripts";do mkdir -p $$dir && echo "$$dir created.";done
+	@ for dir in "dist/styles" "dist/scripts" "dist/fonts" "dist/images";do mkdir -p $$dir && echo "$$dir created.";done
 	@ echo "› Installation done, start with \"make watch\"."
 
 

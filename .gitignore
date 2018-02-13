@@ -93,3 +93,8 @@ tests/_emails/*
 data/*
 !data/.htaccess
 !data/index.php
+
+# Public
+#------------------------
+/public/dist
+/public/node_modules

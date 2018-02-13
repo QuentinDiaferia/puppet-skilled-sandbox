@@ -57,13 +57,11 @@ The Robo questions are defined in `.robo/config/properties.php` and the answers 
 
 ### Integrations
 
-You'll find an `integrations/` folder with the Sass stylesheets, fonts, images and scripts by the application, as well as templates and snippets to help you edit them. This project uses [Bootstrap 4](https://getbootstrap.com/) HTML/CSS framework.
+The assets of the application are located in the `public/assets` folder, in which you'll find the Sass stylesheets, fonts, images and scripts. This project uses [Bootstrap 4](https://getbootstrap.com/) HTML/CSS framework.
 
-While you work on the integration files, execute `make watch` in the `integrations/` folder and visit `puppet-skilled-sandbox/integrations/` to see the changes on the templates in real time.
+To see the changes in real time while editing the assets, use `robo assets:watch` at the project root.
 
-To see the changes in real time to the actual application, use `robo assets:watch` at the project root.
-
-You can also use `make build` and `robo assets:build` if you only want to build the assets once.
+You can also use `robo assets:build` if you only want to build the assets once.
 
 
 ## Step 1

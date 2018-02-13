@@ -9,7 +9,7 @@ $config['default'] = $config['empty'] = $config['simple'] = [
         'vendor',
         'main'
     ],
-    'html_style_path' => 'public/styles',
-    'html_script_path' => 'public/scripts',
-    'html_image_path' => 'public/images',
+    'html_style_path' => 'public/dist/styles',
+    'html_script_path' => 'public/dist/scripts',
+    'html_image_path' => 'public/dist/images',
 ];
