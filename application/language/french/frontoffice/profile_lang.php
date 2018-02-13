@@ -8,6 +8,7 @@ $lang['profile_breadcrumb_index'] = 'Mon profil';
 // Label
 $lang['profile_label_personal'] = 'Informations personnelles';
 $lang['profile_label_company'] = 'Organisation';
+$lang['profile_label_companies'] = 'Organisations';
 $lang['profile_label_first_last_name'] = 'Utilisateur';
 $lang['profile_label_email'] = 'Adresse email';
 $lang['profile_label_phone'] = 'Téléphone';

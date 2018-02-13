@@ -1,4 +1,7 @@
-<?php $preprendId = uniqid();?>
+<?php
+$item = $this->fetch('item');
+$prependId = uniqid();
+?>
 <?= form_open($this->fetch('validator'), current_url(), ['class' => 'profile_form']) ?>
 <fieldset class="card mb-4">
     <h2 class="card-header bg-dark text-white"><?= lang('profile_label_personal') ?></h2>
@@ -10,30 +13,45 @@
             'name' => 'first_last_name',
             'input_element' => 'form/info',
             'label' => 'lang:profile_label_first_last_name',
-            'id' => $preprendId . 'first_last_name',
-            'default_value' => $this->fetch('item')->first_name . " " . $this->fetch('item')->last_name
+            'id' => $prependId . 'first_last_name',
+            'default_value' => $item->first_name . " " . $item->last_name
         ]
     ) ?>
+
     <?= $this->element(
         'form/block_input',
         [
             'name' => 'email',
             'input_element' => 'form/input',
             'label' => 'lang:profile_label_email',
-            'id' => $preprendId . 'email',
-            'default_value' => $this->fetch('item')->email
+            'id' => $prependId . 'email',
+            'default_value' => $item->email
         ]
     ) ?>
-    <?= $this->element(
-        'form/block_input',
-        [
-            'name' => 'company',
-            'input_element' => 'form/info',
-            'label' => 'lang:profile_label_company',
-            'id' => $preprendId . 'company',
-            'default_value' => !empty($this->fetch('item')->companies) ? $this->fetch('item')->companies[0]->name : lang('general_label_undefined')
-        ]
-    ) ?>
+
+    <?php if (!empty($item->companies)) : ?>
+        <?= $this->element(
+            'form/label',
+            [
+                'label' => 'lang:profile_label_companies',
+            ]
+        ) ?>
+        <ul>
+            <?php foreach ($item->companies as $company) : ?>
+                <li><?= html_escape($company->name) ?></li>
+            <?php endforeach ?>
+        </ul>
+        <?php else : ?>
+            <?= $this->element(
+            'form/block_input',
+            [
+                'input_element' => 'form/info',
+                'label' => 'lang:profile_label_companies',
+                'default_value' => lang('general_label_undefined')
+            ]
+        ) ?>
+    <?php endif ?>
+
     <div class="row">
         <div class="col-lg-6">
         <?= $this->element(
@@ -42,8 +60,8 @@
                 'name' => 'phone',
                 'input_element' => 'form/input',
                 'label' => 'lang:profile_label_phone',
-                'id' => $preprendId . 'phone',
-                'default_value' => $this->fetch('item')->phone
+                'id' => $prependId . 'phone',
+                'default_value' => $item->phone
             ]
         ) ?>
         </div>
@@ -54,32 +72,35 @@
                 'name' => 'mobile',
                 'input_element' => 'form/input',
                 'label' => 'lang:profile_label_mobile',
-                'id' => $preprendId . 'mobile',
-                'default_value' => $this->fetch('item')->mobile
+                'id' => $prependId . 'mobile',
+                'default_value' => $item->mobile
             ]
         ) ?>
         </div>
     </div>
+
     <?= $this->element(
         'form/block_input',
         [
             'name' => 'address_1',
             'input_element' => 'form/input',
             'label' => 'lang:profile_label_address_1',
-            'id' => $preprendId . 'address_1',
-            'default_value' => $this->fetch('item')->address_1
+            'id' => $prependId . 'address_1',
+            'default_value' => $item->address_1
         ]
     ) ?>
+
     <?= $this->element(
         'form/block_input',
         [
             'name' => 'address_2',
             'input_element' => 'form/input',
             'label' => 'lang:profile_label_address_2',
-            'id' => $preprendId . 'address_2',
-            'default_value' => $this->fetch('item')->address_2
+            'id' => $prependId . 'address_2',
+            'default_value' => $item->address_2
         ]
     ) ?>
+    
     <div class="row">
         <div class="col-lg-6">
             <?= $this->element(
@@ -88,8 +109,8 @@
                     'name' => 'postcode',
                     'input_element' => 'form/input',
                     'label' => 'lang:profile_label_postcode',
-                    'id' => $preprendId . 'postcode',
-                    'default_value' => $this->fetch('item')->postcode
+                    'id' => $prependId . 'postcode',
+                    'default_value' => $item->postcode
                 ]
             ) ?>
         </div>
@@ -100,8 +121,8 @@
                     'name' => 'town',
                     'input_element' => 'form/input',
                     'label' => 'lang:profile_label_town',
-                    'id' => $preprendId . 'town',
-                    'default_value' => $this->fetch('item')->town
+                    'id' => $prependId . 'town',
+                    'default_value' => $item->town
                 ]
             ) ?>
         </div>
@@ -119,7 +140,7 @@
                 'name' => 'password',
                 'input_element' => 'form/input',
                 'label' => 'lang:profile_label_password',
-                'id' => $preprendId . 'password',
+                'id' => $prependId . 'password',
                 'default_value' => '',
                 'extra' => [
                     'type' => 'password'
@@ -133,7 +154,7 @@
                 'name' => 'password_confirm',
                 'input_element' => 'form/input',
                 'label' => 'lang:profile_label_password_confirm',
-                'id' => $preprendId . 'password_confirm',
+                'id' => $prependId . 'password_confirm',
                 'default_value' => '',
                 'extra' => [
                     'type' => 'password'
@@ -152,8 +173,8 @@
                 'name' => 'language',
                 'input_element' => 'form/select',
                 'label' => 'lang:profile_label_language',
-                'id' => $preprendId . 'language',
-                'default_value' => $this->fetch('item')->language,
+                'id' => $prependId . 'language',
+                'default_value' => $item->language,
                 'options' => $this->fetch('languages')
             ]
         ) ?>
@@ -163,8 +184,8 @@
                 'name' => 'date_format',
                 'input_element' => 'form/select',
                 'label' => 'lang:profile_label_date_format',
-                'id' => $preprendId . 'date_format',
-                'default_value' => $this->fetch('item')->datetime_format,
+                'id' => $prependId . 'date_format',
+                'default_value' => $item->datetime_format,
                 'options' => date_format_list(),
             ]
         ) ?>
@@ -174,8 +195,8 @@
                 'name' => 'timezone',
                 'input_element' => 'form/select',
                 'label' => 'lang:profile_label_timezone',
-                'id' => $preprendId . 'timezone',
-                'default_value' => $this->fetch('item')->timezone,
+                'id' => $prependId . 'timezone',
+                'default_value' => $item->timezone,
                 'options' => timezone_list(),
             ]
         ) ?>
